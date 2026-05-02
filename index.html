@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trase Investor Strategy Deck — Animated</title>
+  <style>
+    :root {
+      --bg: #F7F9FC;
+      --panel: #FFFFFF;
+      --text: #1A1A1A;
+      --muted: #6B7280;
+      --border: #E5E7EB;
+      --primary: #2B6CB0;
+      --primary-soft: #EDF2F7;
+      --primary-pale: #EAF3FF;
+      --green: #2F855A;
+      --green-soft: #EAF8F0;
+      --orange: #DD6B20;
+      --orange-soft: #FFF7ED;
+      --purple: #6B46C1;
+      --purple-soft: #F1ECFF;
+      --shadow: 0 18px 60px rgba(17, 24, 39, 0.08);
+      --radius: 24px;
+      --ease: cubic-bezier(.22,1,.36,1);
+    }
+
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: -20%;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 18% 12%, rgba(43,108,176,.13), transparent 28%),
+        radial-gradient(circle at 82% 8%, rgba(107,70,193,.09), transparent 24%),
+        radial-gradient(circle at 76% 86%, rgba(47,133,90,.08), transparent 28%);
+      filter: blur(12px);
+      z-index: 0;
+    }
+
+    .deck { position: relative; z-index: 1; width: 100vw; height: 100vh; }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      padding: 64px 96px 72px;
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 24px;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateX(44px) scale(.985);
+      transition: opacity .55s var(--ease), transform .55s var(--ease);
+    }
+
+    .slide.active { opacity: 1; pointer-events: auto; transform: translateX(0) scale(1); }
+    .slide.prev { transform: translateX(-44px) scale(.985); }
+
+    .eyebrow { display: none; }
+
+    h1 {
+      font-size: clamp(44px, 5vw, 72px); line-height: .98; font-weight: 750;
+      letter-spacing: -0.055em; margin: 0; max-width: 920px;
+    }
+
+    h2 {
+      font-size: clamp(36px, 4vw, 56px); line-height: 1.04; font-weight: 750;
+      letter-spacing: -0.045em; margin: 0;
+    }
+
+    h3 { font-size: 28px; line-height: 36px; letter-spacing: -0.025em; margin: 0; }
+    p { font-size: 20px; line-height: 30px; color: var(--muted); margin: 18px 0 0; max-width: 680px; }
+    .small { font-size: 15px; line-height: 22px; color: var(--muted); }
+
+    .brand {
+      position: fixed; z-index: 20; left: 32px; top: 26px; display: flex; align-items: center; gap: 10px;
+      font-weight: 850; letter-spacing: -0.03em; color: var(--text);
+    }
+    .brand-mark {
+      width: 32px; height: 32px; border-radius: 10px;
+      background: linear-gradient(135deg, var(--primary), #7AA7D9);
+      box-shadow: 0 10px 26px rgba(43,108,176,.24); position: relative;
+    }
+    .brand-mark::after { content: ""; position: absolute; inset: 9px; border-radius: 6px; background: white; opacity: .86; }
+
+    .controls {
+      position: fixed; z-index: 20; right: 32px; bottom: 26px; display: flex; gap: 10px; align-items: center;
+    }
+    button {
+      border: 1px solid var(--border); background: rgba(255,255,255,.82); backdrop-filter: blur(14px);
+      color: var(--text); padding: 12px 16px; border-radius: 999px; font-weight: 800; cursor: pointer;
+      box-shadow: 0 10px 30px rgba(17,24,39,.05); transition: transform .18s ease, border-color .18s ease;
+    }
+    button:hover { transform: translateY(-1px); border-color: rgba(43,108,176,.35); }
+    .counter { position: fixed; z-index: 20; left: 32px; bottom: 30px; font-size: 14px; color: var(--muted); font-weight: 800; }
+    .dots { position: fixed; z-index: 20; top: 30px; right: 32px; display: flex; gap: 7px; }
+    .dot { width: 7px; height: 7px; border-radius: 999px; background: #CBD5E1; transition: width .25s ease, background .25s ease; cursor:pointer; }
+    .dot.active { width: 28px; background: var(--primary); }
+
+    .card {
+      background: rgba(255,255,255,.86); border: 1px solid var(--border); border-radius: var(--radius);
+      box-shadow: var(--shadow); padding: 28px;
+    }
+    .soft-card {
+      background: rgba(237,242,247,.72); border: 1px solid rgba(229,231,235,.95);
+      border-radius: var(--radius); padding: 24px;
+    }
+    .metric {
+      background: var(--panel); border: 1px solid var(--border); border-radius: 28px; box-shadow: var(--shadow); padding: 28px 32px;
+    }
+    .metric .num { display: block; font-size: 56px; line-height: 62px; font-weight: 850; letter-spacing: -0.06em; color: var(--primary); }
+    .metric .label { display: block; margin-top: 8px; color: var(--muted); font-size: 17px; line-height: 24px; font-weight: 650; }
+
+    .hero-left { grid-column: 1 / 7; align-self: center; }
+    .hero-right { grid-column: 8 / 13; align-self: center; }
+    .full-center { grid-column: 2 / 12; align-self: center; text-align: center; }
+    .left { grid-column: 1 / 6; align-self: center; }
+    .right { grid-column: 7 / 13; align-self: center; }
+    .top-title { grid-column: 1 / 13; align-self: start; }
+
+    .visual-panel {
+      min-height: 460px; border-radius: 36px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.88), rgba(255,255,255,.74)),
+        radial-gradient(circle at 22% 25%, rgba(43,108,176,.14), transparent 28%),
+        radial-gradient(circle at 76% 76%, rgba(47,133,90,.1), transparent 30%);
+      border: 1px solid var(--border); box-shadow: var(--shadow); position: relative; overflow: hidden; padding: 34px;
+    }
+
+    .diagram-row { display: flex; align-items: center; justify-content: center; gap: 14px; flex-wrap: wrap; }
+    .node {
+      min-width: 132px; min-height: 76px; border-radius: 18px; background: white; border: 1px solid var(--border);
+      box-shadow: 0 14px 34px rgba(17,24,39,.06); display: flex; align-items: center; justify-content: center;
+      padding: 14px 18px; text-align: center; font-weight: 850; color: var(--text);
+    }
+    .node.small-node { min-width: 110px; min-height: 62px; font-size: 14px; font-weight: 850; }
+    .node.primary { background: var(--primary-pale); border-color: rgba(43,108,176,.30); color: var(--primary); transform: scale(1.08); }
+    .node.green { background: var(--green-soft); border-color: rgba(47,133,90,.25); color: var(--green); }
+    .node.purple { background: var(--purple-soft); border-color: rgba(107,70,193,.22); color: var(--purple); }
+    .arrow { font-size: 28px; color: var(--primary); font-weight: 900; }
+
+    .hero-console {
+      min-height: 560px; border-radius: 38px; border: 1px solid var(--border); box-shadow: var(--shadow);
+      background: linear-gradient(135deg, rgba(255,255,255,.94), rgba(234,243,255,.78));
+      padding: 24px; position: relative; overflow: hidden;
+    }
+    .hero-console::before {
+      content:""; position:absolute; inset:0;
+      background:
+        linear-gradient(90deg, transparent 0 36px, rgba(43,108,176,.05) 37px),
+        linear-gradient(0deg, transparent 0 36px, rgba(43,108,176,.05) 37px);
+      background-size: 38px 38px; opacity:.8;
+    }
+    .console-top {
+      position: relative; z-index: 1; display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;
+    }
+    .traffic { display:flex; gap:8px; }
+    .traffic span { width:11px; height:11px; border-radius:50%; background:#CBD5E1; display:block; }
+    .console-title { color: var(--muted); font-size: 13px; font-weight:850; letter-spacing:.08em; text-transform:uppercase; }
+    .console-grid { position: relative; z-index: 1; display:grid; grid-template-columns: 1.2fr .8fr; gap:14px; }
+    .console-card {
+      background:rgba(255,255,255,.9); border:1px solid var(--border); border-radius:22px; padding:20px; min-height:145px;
+      box-shadow: 0 14px 34px rgba(17,24,39,.055);
+    }
+    .console-card.big { grid-row: span 2; min-height: 304px; display:flex; flex-direction:column; justify-content:space-between; }
+    .signal-map {
+      height: 170px; border-radius:22px; background:
+        radial-gradient(circle at 30% 34%, rgba(43,108,176,.9) 0 7px, transparent 8px),
+        radial-gradient(circle at 66% 28%, rgba(47,133,90,.9) 0 6px, transparent 7px),
+        radial-gradient(circle at 52% 70%, rgba(107,70,193,.9) 0 7px, transparent 8px),
+        linear-gradient(135deg, #F8FBFF, #EDF2F7);
+      border: 1px solid var(--border);
+      position: relative; overflow:hidden;
+    }
+    .signal-map::before {
+      content:""; position:absolute; left:30%; top:34%; width:200px; height:120px;
+      border-top:2px dashed rgba(43,108,176,.28); border-right:2px dashed rgba(43,108,176,.24); transform:rotate(10deg);
+    }
+    .status-dot { width:9px; height:9px; border-radius:50%; background:var(--green); display:inline-block; margin-right:8px; box-shadow:0 0 0 5px rgba(47,133,90,.1); }
+    .micro-label { color:var(--muted); font-size:12px; line-height:18px; font-weight:850; letter-spacing:.08em; text-transform:uppercase; }
+    .micro-title { color:var(--text); font-size:18px; line-height:24px; font-weight:850; margin-top:8px; }
+    .mini-bars { display:flex; gap:7px; align-items:end; height:70px; margin-top:16px; }
+    .mini-bars span { width:18px; background:#D8E6F7; border-radius:999px; display:block; }
+    .mini-bars span:nth-child(2){height:42px}.mini-bars span:nth-child(3){height:61px;background:#BBD6F4}.mini-bars span:nth-child(4){height:35px}.mini-bars span:nth-child(5){height:55px;background:#9FC2EA}.mini-bars span:nth-child(1){height:28px}
+    .source-note { display: none; }
+
+    .x-mark {
+      width: 74px; height: 74px; border-radius: 999px; background: var(--orange-soft); color: var(--orange);
+      display: flex; justify-content: center; align-items: center; font-size: 38px; font-weight: 900;
+      border: 1px solid #FED7AA; box-shadow: 0 18px 40px rgba(221,107,32,.11);
+    }
+
+    .runtime-stack { display: grid; gap: 18px; place-items: center; }
+    .stack-layer {
+      width: min(600px, 100%); min-height: 86px; border-radius: 22px; background: white; border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: 850;
+      box-shadow: 0 14px 36px rgba(17,24,39,.06);
+    }
+    .stack-layer.trase {
+      width: min(700px, 100%); min-height: 118px; background: linear-gradient(135deg, var(--primary-pale), white);
+      border: 2px solid rgba(43,108,176,.32); color: var(--primary); position: relative;
+    }
+
+    .pill-row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 18px; }
+    .pill {
+      border-radius: 999px; background: white; border: 1px solid var(--border); padding: 10px 14px; color: var(--muted);
+      font-size: 14px; font-weight: 850; box-shadow: 0 8px 22px rgba(17,24,39,.04);
+    }
+    .pill.blue { background: var(--primary-pale); color: var(--primary); border-color: rgba(43,108,176,.22); }
+    .pill.green { background: var(--green-soft); color: var(--green); border-color: rgba(47,133,90,.18); }
+    .pill.purple { background: var(--purple-soft); color: var(--purple); border-color: rgba(107,70,193,.18); }
+
+    .industry-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-top: 30px; }
+    .industry-card {
+      background: white; border: 1px solid var(--border); border-radius: 24px; padding: 24px; min-height: 224px;
+      box-shadow: 0 14px 38px rgba(17,24,39,.055); position: relative; overflow: hidden;
+    }
+    .industry-card::after {
+      content: ""; position: absolute; right: -30px; top: -30px; width: 120px; height: 120px; border-radius: 50%; background: var(--primary-pale);
+    }
+    .icon {
+      width: 44px; height: 44px; border-radius: 14px; background: var(--primary-pale); color: var(--primary);
+      display: grid; place-items: center; font-size: 24px; font-weight: 900; margin-bottom: 20px; position: relative; z-index: 1;
+    }
+    .industry-card h3 { font-size: 22px; line-height: 28px; margin-bottom: 12px; position: relative; z-index: 1; }
+    .industry-card p { font-size: 16px; line-height: 24px; margin: 0; position: relative; z-index: 1; }
+
+    .before-after { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 30px; }
+    .ba-panel {
+      min-height: 320px; border-radius: 28px; border: 1px solid var(--border); background: white;
+      box-shadow: 0 14px 36px rgba(17,24,39,.055); padding: 28px; display: flex; flex-direction: column; justify-content: center; gap: 28px;
+    }
+    .ba-panel.after { background: linear-gradient(135deg, var(--primary-pale), white); border-color: rgba(43,108,176,.24); }
+
+    .badge-list { display: flex; flex-direction: column; gap: 14px; margin-top: 24px; }
+    .check-badge {
+      background: white; border: 1px solid var(--border); border-radius: 16px; padding: 16px 18px;
+      font-size: 18px; line-height: 26px; font-weight: 850; box-shadow: 0 10px 28px rgba(17,24,39,.045);
+    }
+    .check-badge::before { content: "✓"; color: var(--green); font-weight: 900; margin-right: 10px; }
+
+    .duke-card { min-height: 500px; display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: stretch; }
+    .quote {
+      margin-top: 28px; padding: 24px; border-radius: 22px; background: var(--primary-soft); border: 1px solid var(--border);
+      color: var(--text); font-size: 22px; line-height: 32px; font-weight: 700; letter-spacing: -.02em;
+    }
+    .quote span { display: block; color: var(--muted); font-size: 14px; line-height: 20px; margin-top: 12px; font-weight: 800; letter-spacing: .02em; }
+
+    .moat-cloud { position: relative; height: 430px; display: grid; place-items: center; }
+    .orbit-node {
+      position: absolute; min-width: 170px; border-radius: 18px; background: white; border: 1px solid var(--border);
+      box-shadow: 0 14px 34px rgba(17,24,39,.055); padding: 16px; text-align: center; font-weight: 850;
+    }
+    .orbit-node.n1 { top: 18px; left: 80px; }
+    .orbit-node.n2 { top: 18px; right: 80px; }
+    .orbit-node.n3 { bottom: 34px; left: 160px; }
+    .orbit-node.n4 { bottom: 34px; right: 160px; }
+    .center-trase {
+      width: 220px; height: 220px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), #7AA7D9);
+      color: white; display: grid; place-items: center; font-size: 34px; font-weight: 900; letter-spacing: -0.05em;
+      box-shadow: 0 30px 80px rgba(43,108,176,.26); position: relative;
+    }
+    .center-trase::before {
+      content: ""; position: absolute; inset: -48px; border: 1px dashed rgba(43,108,176,.28); border-radius: 50%;
+      animation: spin 18s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .metric-grid { display:grid; grid-template-columns: repeat(3, 1fr); gap:18px; margin-top: 36px; }
+    .metric-card {
+      background:white; border:1px solid var(--border); border-radius:26px; box-shadow:0 14px 38px rgba(17,24,39,.055);
+      padding:26px; min-height:190px; text-align:left; position:relative; overflow:hidden;
+    }
+    .metric-card::after { content:""; position:absolute; right:-36px; bottom:-38px; width:140px; height:140px; border-radius:50%; background:var(--primary-pale); }
+    .metric-card .big { font-size:54px; line-height:60px; font-weight:900; letter-spacing:-.06em; color:var(--primary); position:relative; z-index:1; }
+    .metric-card .desc { font-size:16px; line-height:24px; color:var(--muted); font-weight:650; margin-top:10px; position:relative; z-index:1; }
+
+    .reveal { opacity: 0; transform: translateY(18px); transition: opacity .7s var(--ease), transform .7s var(--ease); }
+    .active .reveal { opacity: 1; transform: translateY(0); }
+    .active .delay-1 { transition-delay: .12s; }
+    .active .delay-2 { transition-delay: .24s; }
+    .active .delay-3 { transition-delay: .36s; }
+    .active .delay-4 { transition-delay: .48s; }
+
+    .float { animation: float 6s ease-in-out infinite; }
+    .float.slow { animation-duration: 8s; }
+    .float.fast { animation-duration: 4.8s; }
+    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+    .pulse { animation: pulse 2.7s ease-in-out infinite; }
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(43,108,176,.18), 0 18px 60px rgba(17,24,39,.08); }
+      50% { box-shadow: 0 0 0 18px rgba(43,108,176,0), 0 18px 60px rgba(17,24,39,.08); }
+    }
+
+
+    .proof-strip {
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:14px;
+      margin-top:20px;
+    }
+    .proof-mini {
+      background:white;
+      border:1px solid var(--border);
+      border-radius:20px;
+      padding:18px;
+      box-shadow:0 12px 30px rgba(17,24,39,.05);
+      text-align:left;
+    }
+    .proof-mini strong {
+      display:block;
+      color:var(--primary);
+      font-size:24px;
+      line-height:30px;
+      letter-spacing:-.04em;
+    }
+    .proof-mini span {
+      display:block;
+      color:var(--muted);
+      font-size:13px;
+      line-height:18px;
+      font-weight:700;
+      margin-top:4px;
+    }
+    .quote-hero {
+      background:linear-gradient(135deg, white, var(--primary-pale));
+      border:1px solid rgba(43,108,176,.20);
+      border-radius:28px;
+      padding:24px;
+      box-shadow:0 18px 48px rgba(43,108,176,.10);
+      margin-top:22px;
+      color:var(--text);
+      font-size:19px;
+      line-height:28px;
+      font-weight:760;
+      letter-spacing:-.025em;
+    }
+    .quote-hero span {
+      display:block;
+      margin-top:12px;
+      color:var(--muted);
+      font-size:13px;
+      line-height:18px;
+      font-weight:850;
+      letter-spacing:.02em;
+    }
+    .slide3-grid {
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:24px;
+      margin-top:36px;
+      align-items:stretch;
+    }
+    .compact-card {
+      min-height:250px;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+    }
+    .partner-card {
+      background:linear-gradient(135deg, #FFFFFF, #F1ECFF);
+      border:1px solid rgba(107,70,193,.20);
+      border-radius:28px;
+      padding:28px;
+      box-shadow:var(--shadow);
+      text-align:left;
+      margin-top:24px;
+    }
+    .partner-card .bigline {
+      color:var(--purple);
+      font-size:36px;
+      line-height:42px;
+      font-weight:900;
+      letter-spacing:-.055em;
+    }
+    .partner-card p {
+      font-size:17px;
+      line-height:25px;
+      margin-top:12px;
+    }
+
+    @media (max-width: 900px) {
+      body { overflow: auto; }
+      .deck { height: auto; }
+      .slide {
+        position: relative; height: auto; min-height: 100vh; padding: 72px 24px; grid-template-columns: 1fr;
+        opacity: 1; transform: none; pointer-events: auto;
+      }
+      .hero-left, .hero-right, .left, .right, .full-center, .top-title { grid-column: 1; }
+      .industry-grid, .before-after, .duke-card, .metric-grid, .console-grid { grid-template-columns: 1fr; }
+      .dots, .controls, .counter { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="brand"><div class="brand-mark"></div><span>Trase</span></div>
+  <div class="dots" id="dots"></div>
+  <div class="counter" id="counter">01 / 10</div>
+
+  <main class="deck" id="deck">
+
+    <section class="slide active">
+      <div class="hero-left">
+        <div class="eyebrow reveal">Sovereign AI Runtime</div>
+        <h1 class="reveal delay-1">Trustworthy AI that runs where the work happens.</h1>
+        <p class="reveal delay-2">Trase OS gives critical organizations sovereign, governed AI agents with real-time intelligence, compliance, auditability, and human oversight.</p>
+
+        <div class="metric reveal delay-3" style="margin-top:34px; max-width:620px; background:linear-gradient(135deg,#FFFFFF,#EAF3FF); border-color:rgba(43,108,176,.22);">
+          <span class="num" style="font-size:72px; line-height:76px;">98.1%</span>
+          <span class="label">success achieved by Trase agents at Duke — the proof point that governed agents can perform in real clinical operations.</span>
+        </div>
+
+        <div class="quote-hero reveal delay-4">
+          “By automating these processes, Trase is helping us improve outcomes, reduce costs, and enhance both patient and provider satisfaction.”
+          <span>Manesh R. Patel, MD — Chief of the Division of Cardiology, Duke University School of Medicine</span>
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="hero-console reveal delay-2">
+          <div class="console-top">
+            <div class="traffic"><span></span><span></span><span></span></div>
+            <div class="console-title">Trase OS</div>
+          </div>
+          <div class="console-grid">
+            <div class="console-card big float">
+              <div>
+                <div class="micro-label"><span class="status-dot"></span>Production proof</div>
+                <div class="micro-title">Duke agents running through Trase OS</div>
+              </div>
+              <div class="signal-map"></div>
+              <div class="proof-strip">
+                <div class="proof-mini"><strong>98.1%</strong><span>agent success</span></div>
+                <div class="proof-mini"><strong>30d</strong><span>pilot path</span></div>
+                <div class="proof-mini"><strong>0</strong><span>new perimeter</span></div>
+              </div>
+            </div>
+            <div class="console-card float slow">
+              <div class="micro-label">Governance</div>
+              <div class="micro-title">Policies enforced before agents act</div>
+              <div class="mini-bars"><span></span><span></span><span></span><span></span><span></span></div>
+            </div>
+            <div class="console-card float fast">
+              <div class="micro-label">Sovereign deployment</div>
+              <div class="micro-title">VPC, on-prem, hybrid, air-gapped</div>
+              <div class="pill-row" style="justify-content:flex-start;">
+                <span class="pill blue">Trase OS</span><span class="pill green">compliance</span>
+              </div>
+            </div>
+          </div>
+          <div class="source-note">Public Trase positioning: one runtime, every agent, one standard; Duke proof and Dr. Patel quote from Trase.ai.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="top-title">
+        <div class="eyebrow reveal">Market Timing</div>
+        <h2 class="reveal delay-1">Agents can execute. Enterprises still cannot deploy them.</h2>
+      </div>
+      <div class="full-center">
+        <div class="metric-grid reveal delay-2">
+          <div class="metric-card">
+            <div class="big">12% → 66.3%</div>
+            <div class="desc">Agent success on OSWorld jumped in one year, proving capability is no longer the main bottleneck.</div>
+          </div>
+          <div class="metric-card">
+            <div class="big">1 in 3</div>
+            <div class="desc">Agents still fail roughly one in three structured benchmark attempts, making governance non-negotiable.</div>
+          </div>
+          <div class="metric-card">
+            <div class="big">89%</div>
+            <div class="desc">BERI reports most enterprise AI agents never reach production — the deployment gap Trase is built to close.</div>
+          </div>
+        </div>
+        <div class="visual-panel reveal delay-3" style="margin-top:34px; min-height:270px; display:grid; place-items:center;">
+          <div class="diagram-row">
+            <div class="node green">Agent Capability</div>
+            <div class="arrow">↑</div>
+            <div class="node primary">Production Gap</div>
+            <div class="arrow">→</div>
+            <div class="node purple">Runtime Opportunity</div>
+          </div>
+          <div class="source-note">Sources: Stanford HAI AI Index 2026; BERI article on enterprise deployment gap.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="top-title">
+        <div class="eyebrow reveal">Problem</div>
+        <h2 class="reveal delay-1">AI still does not run where real work happens.</h2>
+      </div>
+      <div class="full-center">
+        <div class="slide3-grid reveal delay-2">
+          <div class="card compact-card">
+            <div>
+              <h3>Today: fragmented AI</h3>
+              <p>AI produces outputs. People still stitch the work back into operational systems.</p>
+            </div>
+            <div class="diagram-row" style="margin-top:28px;">
+              <div class="node small-node">AI Tool</div><div class="arrow">→</div>
+              <div class="node small-node">Dashboard</div><div class="arrow">→</div>
+              <div class="node small-node">Manual Handoff</div>
+            </div>
+          </div>
+          <div class="card compact-card pulse" style="background:linear-gradient(135deg,var(--primary-pale),white); border-color:rgba(43,108,176,.24);">
+            <div>
+              <h3>Needed: governed execution</h3>
+              <p>Trustworthy AI workflows execute with compliance, governance, and human escalation built in.</p>
+            </div>
+            <div class="diagram-row" style="margin-top:28px;">
+              <div class="node">Signal</div><div class="arrow">→</div>
+              <div class="node primary">Trase OS</div><div class="arrow">→</div>
+              <div class="node">Action</div>
+            </div>
+          </div>
+        </div>
+        <div class="visual-panel reveal delay-3" style="margin-top:24px; min-height:210px; display:grid; place-items:center;">
+          <div>
+            <div class="diagram-row">
+              <div class="node green">Real-time intelligence</div>
+              <div class="arrow">+</div>
+              <div class="node purple">Compliance</div>
+              <div class="arrow">+</div>
+              <div class="node primary">Trustworthy execution</div>
+            </div>
+            <div class="pill-row">
+              <span class="pill blue">sovereign</span>
+              <span class="pill green">auditable</span>
+              <span class="pill purple">governed</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="full-center">
+        <div class="eyebrow reveal">Broken System</div>
+        <h2 class="reveal delay-1">Execution and governance are disconnected.</h2>
+        <div class="diagram-row reveal delay-2" style="margin-top:64px;">
+          <div class="card" style="width:320px; min-height:190px;">
+            <h3>AI Builders</h3>
+            <p>Move fast. Ship workflows. Little uniform control.</p>
+          </div>
+          <div class="x-mark">×</div>
+          <div class="card" style="width:320px; min-height:190px;">
+            <h3>Governance Tools</h3>
+            <p>Track risk. Add rules later. Sit outside execution.</p>
+          </div>
+        </div>
+        <div class="visual-panel reveal delay-3" style="margin-top:42px; min-height:210px; display:grid; place-items:center;">
+          <div class="diagram-row">
+            <div class="node green">Compliance</div>
+            <div class="arrow">must happen before</div>
+            <div class="node primary">Agent Action</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="full-center">
+        <div class="eyebrow reveal">Product Insight</div>
+        <h2 class="reveal delay-1">AI needs a sovereign runtime.</h2>
+        <p class="reveal delay-2" style="margin-left:auto; margin-right:auto;">Applications run on an operating system. Agentic AI workflows need a trusted runtime that works across cloud, on-prem, hybrid, and air-gapped environments.</p>
+        <div class="runtime-stack reveal delay-3" style="margin-top:50px;">
+          <div class="stack-layer">AI Agents + AI Workflows</div>
+          <div class="arrow">↓</div>
+          <div class="stack-layer trase pulse">TRASE OS</div>
+          <div class="pill-row">
+            <span class="pill blue">real-time intelligence</span>
+            <span class="pill green">compliance enforcement</span>
+            <span class="pill purple">sovereign deployment</span>
+            <span class="pill">audit trail</span>
+            <span class="pill">human escalation</span>
+          </div>
+          <div class="arrow">↓</div>
+          <div class="stack-layer">Existing Systems + Infrastructure</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="top-title">
+        <div class="eyebrow reveal">Product</div>
+        <h2 class="reveal delay-1">One runtime. Every agent. One standard.</h2>
+      </div>
+      <div class="full-center">
+        <div class="visual-panel reveal delay-2" style="display:grid; place-items:center;">
+          <div>
+            <div class="diagram-row">
+              <div class="node">Input</div>
+              <div class="arrow">→</div>
+              <div class="node primary pulse" style="min-width:250px;">Agent Workflow</div>
+              <div class="arrow">→</div>
+              <div class="node">Outcome</div>
+            </div>
+            <div style="height:38px;"></div>
+            <div class="arrow">↓</div>
+            <div class="stack-layer trase" style="margin:10px auto 0; width:560px;">Trase OS</div>
+            <div class="pill-row">
+              <span class="pill blue">monitor</span>
+              <span class="pill blue">audit</span>
+              <span class="pill blue">govern</span>
+              <span class="pill green">real-time compliance</span>
+              <span class="pill">cost controls</span>
+              <span class="pill">human-in-the-loop</span>
+            </div>
+          </div>
+          <div class="source-note">Aligned to Trase.ai: a single pane of glass to monitor, audit, and govern every AI agent.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="top-title">
+        <div class="eyebrow reveal">Market Surface</div>
+        <h2 class="reveal delay-1">Built for regulated, mission-critical environments.</h2>
+      </div>
+      <div class="full-center">
+        <div class="industry-grid reveal delay-2">
+          <div class="industry-card">
+            <div class="icon">+</div>
+            <h3>Healthcare</h3>
+            <p>Patient access, clinical operations, research, prior authorization.</p>
+          </div>
+          <div class="industry-card">
+            <div class="icon">◇</div>
+            <h3>National Security</h3>
+            <p>Air-gapped workflows, mission intelligence, secure review loops.</p>
+          </div>
+          <div class="industry-card">
+            <div class="icon">⚡</div>
+            <h3>Energy</h3>
+            <p>Grid operations, field work, compliance, anomaly response.</p>
+          </div>
+          <div class="industry-card">
+            <div class="icon">▦</div>
+            <h3>Enterprise</h3>
+            <p>Finance, contracts, customer operations, back-office automation.</p>
+          </div>
+        </div>
+        <div class="diagram-row reveal delay-3" style="margin-top:44px;">
+          <div class="node primary" style="min-width:320px;">Same trustworthy runtime</div>
+          <div class="arrow">→</div>
+          <div class="node green" style="min-width:260px;">Different sovereign environments</div>
+        </div>
+        <div class="partner-card reveal delay-4" style="max-width:920px; margin:32px auto 0; text-align:center;">
+          <div class="bigline">Selected by Google Public Sector + NVIDIA</div>
+          <p style="margin-left:auto; margin-right:auto;">Trase was named in the inaugural Google Public Sector federal AI startup accelerator cohort, launched in collaboration with NVIDIA for AI-focused ISVs serving the federal market.</p>
+          <div class="pill-row">
+            <span class="pill purple">Google Public Sector</span>
+            <span class="pill green">NVIDIA</span>
+            <span class="pill blue">Federal AI Accelerator</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="left">
+        <div class="eyebrow reveal">Governance</div>
+        <h2 class="reveal delay-1">Trase OS makes governance happen.</h2>
+        <p class="reveal delay-2">Every agent, whether built by Trase, a customer team, or a third-party vendor, inherits the same compliance policies before it can act.</p>
+        <div class="badge-list reveal delay-3">
+          <div class="check-badge">Governance rules run before agents act</div>
+          <div class="check-badge">Every decision is traceable</div>
+          <div class="check-badge">Every escalation is logged</div>
+          <div class="check-badge">Real-time compliance view</div>
+        </div>
+      </div>
+      <div class="right">
+        <div class="visual-panel reveal delay-2" style="display:grid; place-items:center;">
+          <div class="runtime-stack">
+            <div class="diagram-row">
+              <div class="node small-node">Trase Agents</div>
+              <div class="node small-node">Customer Agents</div>
+              <div class="node small-node">Vendor Agents</div>
+            </div>
+            <div class="arrow">↓</div>
+            <div class="stack-layer trase pulse">TRASE OS</div>
+            <div class="pill-row">
+              <span class="pill blue">policy engine</span>
+              <span class="pill green">audit logs</span>
+              <span class="pill purple">human escalation</span>
+              <span class="pill">cost controls</span>
+            </div>
+            <div class="arrow">↓</div>
+            <div class="stack-layer">Compliant Action in Customer Environment</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="top-title">
+        <div class="eyebrow reveal">Proof</div>
+        <h2 class="reveal delay-1">Duke Health validates governed AI in high-stakes care.</h2>
+      </div>
+      <div class="full-center">
+        <div class="duke-card reveal delay-2">
+          <div class="card" style="text-align:left;">
+            <h3 style="font-size:36px; line-height:44px;">Duke Heart Center</h3>
+            <p>Trase agents are in production-facing clinical workflows at Duke Heart Center, proving governed AI can perform in high-stakes care.</p>
+            <div class="metric" style="margin-top:30px;">
+              <span class="num">65,000+</span>
+              <span class="label">people with heart disease treated annually by Duke Heart Center.</span>
+            </div>
+            <div class="quote">
+              “By automating these processes, Trase is helping us improve outcomes, reduce costs, and enhance both patient and provider satisfaction.”
+              <span>Manesh R. Patel, MD — Duke University School of Medicine</span>
+            </div>
+          </div>
+          <div class="visual-panel" style="display:grid; place-items:center;">
+            <div>
+              <div class="diagram-row">
+                <div class="node">Patient / Workflow Signal</div>
+              </div>
+              <div class="arrow" style="margin:14px 0;">↓</div>
+              <div class="node primary pulse" style="margin:auto; min-width:280px; min-height:100px;">TRASE OS</div>
+              <div class="pill-row">
+                <span class="pill blue">trustworthy</span>
+                <span class="pill green">compliant</span>
+                <span class="pill purple">auditable</span>
+              </div>
+              <div class="arrow" style="margin:14px 0;">↓</div>
+              <div class="diagram-row">
+                <div class="node">Care Team</div>
+                <div class="node">Hospital Systems</div>
+              </div>
+            </div>
+            <div class="source-note">Source: Trase.ai Duke case-study language, Duke Heart Center scale, and Google Public Sector accelerator announcement.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="full-center">
+        <div class="eyebrow reveal">End State</div>
+        <h2 class="reveal delay-1">No critical AI runs without Trase.</h2>
+        <p class="reveal delay-2" style="margin-left:auto; margin-right:auto;">The moat is the standard: internal AI, vendor AI, and future AI workflows all inherit Trase OS, one governance layer, and one compliance model.</p>
+        <div class="moat-cloud reveal delay-3">
+          <div class="orbit-node n1">Internal AI</div>
+          <div class="orbit-node n2">Vendor AI</div>
+          <div class="center-trase">TRASE</div>
+          <div class="orbit-node n3">Future AI</div>
+          <div class="orbit-node n4">Critical Systems</div>
+        </div>
+        <div class="pill-row reveal delay-4">
+          <span class="pill blue">One runtime</span>
+          <span class="pill green">Every agent</span>
+          <span class="pill purple">One standard</span>
+          <span class="pill">Sovereign</span>
+          <span class="pill">Trustworthy</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="controls">
+    <button onclick="prevSlide()">← Prev</button>
+    <button onclick="nextSlide()">Next →</button>
+  </div>
+
+  <script>
+    const slides = Array.from(document.querySelectorAll('.slide'));
+    const dotsContainer = document.getElementById('dots');
+    const counter = document.getElementById('counter');
+    let index = 0;
+
+    slides.forEach((_, i) => {
+      const dot = document.createElement('div');
+      dot.className = 'dot' + (i === 0 ? ' active' : '');
+      dot.addEventListener('click', () => goTo(i));
+      dotsContainer.appendChild(dot);
+    });
+
+    const dots = Array.from(document.querySelectorAll('.dot'));
+
+    function update() {
+      slides.forEach((slide, i) => {
+        slide.classList.toggle('active', i === index);
+        slide.classList.toggle('prev', i < index);
+      });
+      dots.forEach((dot, i) => dot.classList.toggle('active', i === index));
+      counter.textContent = String(index + 1).padStart(2, '0') + ' / ' + String(slides.length).padStart(2, '0');
+    }
+
+    function goTo(i) {
+      index = Math.max(0, Math.min(slides.length - 1, i));
+      update();
+    }
+
+    function nextSlide() { goTo(index + 1); }
+    function prevSlide() { goTo(index - 1); }
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'ArrowRight' || event.key === ' ' || event.key === 'PageDown') nextSlide();
+      if (event.key === 'ArrowLeft' || event.key === 'PageUp') prevSlide();
+      if (event.key === 'Home') goTo(0);
+      if (event.key === 'End') goTo(slides.length - 1);
+    });
+
+    let touchStartX = 0;
+    document.addEventListener('touchstart', e => touchStartX = e.changedTouches[0].screenX, {passive:true});
+    document.addEventListener('touchend', e => {
+      const dx = e.changedTouches[0].screenX - touchStartX;
+      if (Math.abs(dx) > 50) dx < 0 ? nextSlide() : prevSlide();
+    }, {passive:true});
+
+    update();
+  </script>
+</body>
+</html>
