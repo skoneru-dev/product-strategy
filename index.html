@@ -818,6 +818,230 @@
       letter-spacing: -0.02em;
     }
 
+
+    .product-shell {
+      min-height: 520px;
+      display: grid;
+      grid-template-columns: 1.02fr .98fr;
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    .os-hero-card {
+      background: linear-gradient(135deg, #FFFFFF, var(--primary-pale));
+      border: 1px solid rgba(43,108,176,.20);
+      border-radius: 32px;
+      box-shadow: var(--shadow);
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .os-hero-card::after {
+      content:"";
+      position:absolute;
+      right:-70px;
+      top:-70px;
+      width:220px;
+      height:220px;
+      border-radius:50%;
+      background:rgba(43,108,176,.08);
+    }
+
+    .os-core {
+      min-height: 150px;
+      border-radius: 28px;
+      background: linear-gradient(135deg, var(--primary), #7AA7D9);
+      color: white;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      box-shadow: 0 24px 60px rgba(43,108,176,.22);
+      position: relative;
+      z-index: 1;
+      padding: 28px;
+    }
+
+    .os-core .os-title {
+      display:block;
+      font-size: 38px;
+      line-height: 42px;
+      font-weight: 900;
+      letter-spacing: -0.055em;
+    }
+
+    .os-core .os-sub {
+      display:block;
+      margin-top:8px;
+      font-size:14px;
+      line-height:20px;
+      color:rgba(255,255,255,.78);
+      font-weight:750;
+    }
+
+    .os-flow {
+      display:grid;
+      grid-template-columns: 1fr auto 1.25fr auto 1fr;
+      gap:12px;
+      align-items:center;
+      margin-top:28px;
+      position:relative;
+      z-index:1;
+    }
+
+    .os-flow .flow-node {
+      background:white;
+      border:1px solid var(--border);
+      border-radius:20px;
+      padding:18px 16px;
+      min-height:84px;
+      display:grid;
+      place-items:center;
+      text-align:center;
+      box-shadow:0 10px 28px rgba(15,23,42,.05);
+      font-size:15px;
+      line-height:20px;
+      font-weight:850;
+      color:var(--text);
+    }
+
+    .os-flow .flow-node.center {
+      background:var(--primary-pale);
+      color:var(--primary);
+      border-color:rgba(43,108,176,.22);
+      min-height:100px;
+    }
+
+    .capability-panel {
+      background: rgba(255,255,255,.94);
+      border: 1px solid var(--border);
+      border-radius: 32px;
+      box-shadow: var(--shadow);
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .cap-title {
+      font-size: 22px;
+      line-height: 28px;
+      font-weight: 850;
+      letter-spacing: -0.03em;
+      color: var(--text);
+    }
+
+    .cap-grid {
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:12px;
+    }
+
+    .cap-item {
+      background:#F8FAFC;
+      border:1px solid #E8EEF6;
+      border-radius:18px;
+      padding:15px 14px;
+      min-height:76px;
+    }
+
+    .cap-item strong {
+      display:block;
+      font-size:14px;
+      line-height:18px;
+      color:var(--text);
+      font-weight:850;
+      letter-spacing:-.01em;
+    }
+
+    .cap-item span {
+      display:block;
+      margin-top:5px;
+      font-size:12px;
+      line-height:16px;
+      color:var(--muted);
+      font-weight:650;
+    }
+
+    .learning-loop-clean {
+      margin-top: 6px;
+      padding: 18px;
+      border-radius: 24px;
+      background: linear-gradient(135deg, var(--primary-pale), #FFFFFF);
+      border: 1px solid rgba(43,108,176,.18);
+    }
+
+    .loop-title-clean {
+      font-size:15px;
+      line-height:20px;
+      color:var(--primary);
+      font-weight:900;
+      letter-spacing:-.01em;
+      margin-bottom:14px;
+    }
+
+    .loop-rail {
+      display:grid;
+      grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
+      gap:9px;
+      align-items:center;
+    }
+
+    .loop-pill {
+      background:white;
+      border:1px solid var(--border);
+      border-radius:16px;
+      padding:13px 10px;
+      text-align:center;
+      font-size:12px;
+      line-height:16px;
+      font-weight:850;
+      color:var(--text);
+      box-shadow:0 8px 20px rgba(15,23,42,.04);
+      min-height:60px;
+      display:grid;
+      place-items:center;
+    }
+
+    .loop-pill.emphasis {
+      background:var(--purple-soft);
+      color:var(--purple);
+      border-color:rgba(107,70,193,.18);
+    }
+
+    .loop-arrow-clean {
+      color:var(--primary);
+      font-size:18px;
+      font-weight:900;
+    }
+
+    .loop-caption-clean {
+      margin-top:12px;
+      font-size:12px;
+      line-height:17px;
+      color:var(--muted);
+      font-weight:700;
+    }
+
+
+    .micro-source {
+      position:absolute;
+      bottom:18px;
+      left:50%;
+      transform:translateX(-50%);
+      max-width:900px;
+      width:calc(100% - 220px);
+      text-align:center;
+      font-size:10px;
+      line-height:15px;
+      color:#94A3B8;
+      font-weight:650;
+      letter-spacing:.01em;
+    }
+
     @media (max-width: 900px) {
       body { overflow: auto; }
       .deck { height: auto; }
@@ -846,7 +1070,7 @@
 
         <div class="metric reveal delay-3" style="margin-top:34px; max-width:620px; background:linear-gradient(135deg,#FFFFFF,#EAF3FF); border-color:rgba(43,108,176,.22);">
           <span class="num" style="font-size:72px; line-height:76px;">98.1%</span>
-          <span class="label">success achieved by Trase agents at Duke — the proof point that governed agents can perform in real clinical operations.</span>
+          <span class="label">accuracy achieved by Trase agents at Duke — the proof point that governed agents can perform in real clinical operations.</span>
         </div>
 
         <div class="quote-hero reveal delay-4">
@@ -889,54 +1113,64 @@
           <div class="source-note">Public Trase positioning: one runtime, every agent, one standard; Duke proof and Dr. Patel quote from Trase.ai.</div>
         </div>
       </div>
-    </section>
+    
+<div style="position:absolute; bottom:20px; left:50%; transform:translateX(-50%); font-size:10px; color:#94A3B8; font-weight:600;">
+BERI = Business and Economic Risk Intelligence (source referenced in Stanford AI Index 2026 agent deployment analysis)
+</div>
+
+</section>
 
     <section class="slide">
       <div class="tight-hero">
-        <h2 class="reveal delay-1">Agents crossed the capability threshold. Deployment is the bottleneck.</h2>
-        <div class="slide-kicker reveal delay-2">The market no longer needs another demo. It needs the infrastructure layer that turns capable agents into controlled, compliant, production-grade work.</div>
+        <h2 class="reveal delay-1">Agents work. Deployment is where they fail.</h2>
+        <div class="slide-kicker reveal delay-2">
+          Stanford AI Index data shows agent capability is rising fast. The market gap is no longer intelligence — it is production-grade trust, governance, and control.
+        </div>
 
-        <div class="flow-compare reveal delay-3">
-          <div class="flow-panel weak">
-            <div>
-              <div class="panel-label">Capability has arrived</div>
-              <div class="panel-title">Agents can now complete complex tasks.</div>
-              <div class="metric" style="margin-top:24px; box-shadow:none;">
-                <span class="num">66.3%</span>
-                <span class="label">agent success on OSWorld in the Stanford AI Index, up from roughly 12%.</span>
-              </div>
-            </div>
-            <div class="mini-flow">
-              <div class="node">Prompt</div>
-              <div class="arrow">→</div>
-              <div class="node primary">Agent</div>
-              <div class="arrow">→</div>
-              <div class="node">Task</div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:28px; margin-top:42px;" class="reveal delay-3">
+          <div class="card" style="text-align:center; padding:38px 34px;">
+            <div style="font-size:68px; font-weight:900; color:var(--primary); letter-spacing:-0.06em; line-height:72px;">66%</div>
+            <div style="margin-top:12px; font-size:20px; font-weight:850; letter-spacing:-0.02em;">agent success rate</div>
+            <div style="margin-top:8px; font-size:14px; line-height:20px; color:var(--muted); font-weight:700;">
+              OSWorld benchmark, Stanford AI Index 2026
             </div>
           </div>
 
-          <div class="flow-panel strong">
-            <div>
-              <div class="panel-label">Production still fails</div>
-              <div class="panel-title">Institutions need agents they can control.</div>
-              <div class="outcome-bar">
-                <div class="outcome-chip good">Governance</div>
-                <div class="outcome-chip good">Compliance</div>
-                <div class="outcome-chip good">Auditability</div>
-              </div>
-            </div>
-            <div class="mini-flow">
-              <div class="node">Signal</div>
-              <div class="arrow">→</div>
-              <div class="node primary pulse" style="min-width:150px;">Trase OS</div>
-              <div class="arrow">→</div>
-              <div class="node green">Trusted Action</div>
+          <div class="card" style="text-align:center; padding:38px 34px; background:linear-gradient(135deg,#FFFFFF,#FFF7ED); border-color:#FED7AA;">
+            <div style="font-size:68px; font-weight:900; color:#DD6B20; letter-spacing:-0.06em; line-height:72px;">89%</div>
+            <div style="margin-top:12px; font-size:20px; font-weight:850; letter-spacing:-0.02em;">never reach production</div>
+            <div style="margin-top:8px; font-size:14px; line-height:20px; color:var(--muted); font-weight:700;">
+              reported enterprise agent deployment gap
             </div>
           </div>
         </div>
 
-        <div class="partner-card reveal delay-4" style="max-width:980px; margin:26px auto 0; text-align:center; padding:24px;">
-          <div class="bigline" style="font-size:30px; line-height:36px;">The opportunity: make agentic AI trustworthy enough to run in critical operations.</div>
+        <div style="display:grid; grid-template-columns:1fr .9fr 1fr; gap:20px; align-items:center; margin-top:34px;" class="reveal delay-4">
+          <div class="card" style="text-align:center; padding:26px; background:linear-gradient(135deg,#FFFFFF,var(--primary-pale)); border-color:rgba(43,108,176,.22);">
+            <div style="font-size:48px; font-weight:900; color:var(--primary); letter-spacing:-0.05em; line-height:52px;">98.1%</div>
+            <div style="margin-top:8px; font-size:16px; font-weight:850;">Trase accuracy at Duke</div>
+          </div>
+
+          <div style="text-align:center; font-size:20px; line-height:28px; color:var(--text); font-weight:850;">
+            Capable agents ≠<br/>deployable systems
+          </div>
+
+          <div class="card" style="text-align:center; padding:26px;">
+            <div style="font-size:18px; font-weight:850;">What’s missing?</div>
+            <div style="margin-top:8px; font-size:14px; line-height:20px; color:var(--muted); font-weight:700;">
+              Compliance, governance, observability, and real-time control.
+            </div>
+          </div>
+        </div>
+
+        <div class="partner-card reveal delay-4" style="max-width:900px; margin:34px auto 0; text-align:center; padding:24px;">
+          <div class="bigline" style="font-size:28px; line-height:34px;">
+            The opportunity: make agentic AI trustworthy enough to run in critical operations.
+          </div>
+        </div>
+
+        <div class="micro-source">
+          Source: Stanford HAI AI Index 2026; Rajesh Beri, THE D[AI]LY BRIEF, “AI Agents Hit 66% Success Rate — But 89% Never Reach Production”
         </div>
       </div>
     </section>
@@ -1061,35 +1295,62 @@
         <div class="eyebrow reveal">Product</div>
         <h2 class="reveal delay-1">One runtime. Every agent. One standard.</h2>
       </div>
+
       <div class="full-center">
-        <div class="visual-panel reveal delay-2" style="display:grid; place-items:center;">
-          <div>
-            <div class="diagram-row">
-              <div class="node">Input</div>
-              <div class="arrow">→</div>
-              <div class="node primary pulse" style="min-width:250px;">Agent Workflow</div>
-              <div class="arrow">→</div>
-              <div class="node">Outcome</div>
+        <div class="product-shell reveal delay-2">
+
+          <div class="os-hero-card">
+            <div>
+              <div class="os-core pulse">
+                <div>
+                  <span class="os-title">Trase OS</span>
+                  <span class="os-sub">the governed execution layer for agentic AI</span>
+                </div>
+              </div>
+
+              <div class="os-flow">
+                <div class="flow-node">Signals<br>+ requests</div>
+                <div class="arrow">→</div>
+                <div class="flow-node center">Policy<br>+ identity<br>+ controls</div>
+                <div class="arrow">→</div>
+                <div class="flow-node">Trusted<br>actions</div>
+              </div>
             </div>
-            <div style="height:38px;"></div>
-            <div class="arrow">↓</div>
-            <div class="stack-layer trase" style="margin:10px auto 0; width:560px;">Governance</div>
-            <div class="pill-row">
-              <span class="pill blue">monitor</span>
-              <span class="pill blue">audit</span>
-              <span class="pill blue">govern</span>
+
+            <div class="pill-row" style="justify-content:flex-start; margin-top:24px;">
+              <span class="pill blue">sovereign</span>
               <span class="pill green">real-time compliance</span>
-            </div>
-            <div class="outcome-bar" style="max-width:880px; margin:24px auto 0;">
-              <div class="outcome-chip good">Immutable logs</div>
-              <div class="outcome-chip good">Auditability</div>
-              <div class="outcome-chip good">Observability</div>
-              <div class="outcome-chip good">Access controls</div>
-              <div class="outcome-chip good">Identity management</div>
-              <div class="outcome-chip good">Human escalation</div>
+              <span class="pill purple">human-in-the-loop</span>
             </div>
           </div>
-          <div class="source-note">Aligned to Trase.ai: a single pane of glass to monitor, audit, and govern every AI agent.</div>
+
+          <div class="capability-panel">
+            <div class="cap-title">Infrastructure-grade control plane</div>
+
+            <div class="cap-grid">
+              <div class="cap-item"><strong>Immutable logs</strong><span>Every agent action recorded</span></div>
+              <div class="cap-item"><strong>Auditability</strong><span>Trace decisions end to end</span></div>
+              <div class="cap-item"><strong>Observability</strong><span>Monitor workflows in real time</span></div>
+              <div class="cap-item"><strong>Access controls</strong><span>Govern who can do what</span></div>
+              <div class="cap-item"><strong>Identity management</strong><span>Agent and user identity</span></div>
+              <div class="cap-item"><strong>Cost controls</strong><span>Optimize inference spend</span></div>
+            </div>
+
+            <div class="learning-loop-clean">
+              <div class="loop-title-clean">Compounding learning loop</div>
+              <div class="loop-rail">
+                <div class="loop-pill">Agent<br>actions</div>
+                <div class="loop-arrow-clean">→</div>
+                <div class="loop-pill">Trase OS<br>observes</div>
+                <div class="loop-arrow-clean">→</div>
+                <div class="loop-pill emphasis">Human + agent<br>feedback</div>
+                <div class="loop-arrow-clean">→</div>
+                <div class="loop-pill emphasis">Distill + fine-tune<br>specialized models</div>
+              </div>
+              <div class="loop-caption-clean">Agent↔agent and human↔agent learning improves quality while enabling smaller specialized models that reduce long-term cost.</div>
+            </div>
+          </div>
+
         </div>
       </div>
     </section>
@@ -1249,7 +1510,7 @@
       <div class="full-center">
         <div class="eyebrow reveal">End State</div>
         <h2 class="reveal delay-1">No critical AI runs without Trase.</h2>
-        <p class="reveal delay-2" style="margin-left:auto; margin-right:auto;">Internal AI, vendor AI, and future AI workflows all inherit Trase OS, one governance layer, and one compliance model.</p>
+        <p class="reveal delay-2" style="margin-left:auto; margin-right:auto;">The moat is the standard: internal AI, vendor AI, and future AI workflows all inherit Trase OS, one governance layer, and one compliance model.</p>
         <div class="moat-cloud reveal delay-3">
           <div class="orbit-node n1">Internal AI</div>
           <div class="orbit-node n2">Vendor AI</div>
